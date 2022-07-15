@@ -169,9 +169,6 @@ module.exports = (fileInfo, { jscodeshift: j }) => {
     ast.find(j.CallExpression, {
         callee: {
             type: 'FunctionExpression',
-            extra: {
-                parenthesized: true
-            }
         }
     })
         .filter(p => {
