@@ -27,4 +27,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
-    - run: npm test
+    - name: process entity_browser.tabs.js
+      run: ./node_modules/.bin/jscodeshift -P -t jquery-once.js fixtures/input-entity_browser.tabs.js
+    - name: verify output
+      run: diff -rubB fixtures/input-entity_browser.tabs.js fixtures/expected-entity_browser.tabs.js
