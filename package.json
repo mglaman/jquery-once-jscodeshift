@@ -1,0 +1,14 @@
+{
+  "name": "jquery-once-jscodeshift",
+  "version": "1.0.0",
+  "description": "",
+  "main": "expected.js",
+  "scripts": {
+    "test": "jscodeshift -t jquery-once.js fixture.js -d -p"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "jscodeshift": "^0.13.1"
+  }
+}
