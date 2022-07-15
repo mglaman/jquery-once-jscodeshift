@@ -4,7 +4,7 @@
  * Defines the behavior of the entity browser's tab display.
  */
 
-(function ($, Drupal, drupalSettings, once) {
+((function ($, Drupal, drupalSettings, once) {
 
     'use strict';
 
@@ -83,4 +83,4 @@
             );
     };
 
-}(jQuery, Drupal, drupalSettings, once));
+})(jQuery, Drupal, drupalSettings, once));
