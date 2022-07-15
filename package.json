@@ -2,7 +2,8 @@
   "name": "jquery-once-jscodeshift",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "jquery-once.js",
+  "bin": "cli.js",
   "scripts": {
     "test": "jscodeshift -t jquery-once.js fixture.js -d -p"
   },

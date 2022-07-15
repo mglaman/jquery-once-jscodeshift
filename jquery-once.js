@@ -7,16 +7,6 @@ module.exports = (fileInfo, { jscodeshift: j }) => {
         removeOnce: 'once.remove',
     };
 
-    function fixScoping(ast) {
-        ast.find(j.CallExpression, node => {
-            return node.extra && node.extra.parenthesized && node.callee && node.callee.type === 'FunctionExpression';
-        }).replaceWith(p => {
-            const args = [...p.value.arguments || [], j.identifier('once')];
-            const params = [...p.value.callee.params || [], j.identifier('once')];
-            return j.callExpression(j.functionExpression(null, params, p.value.callee.body), args)
-        })
-    }
-
     function findjQuery(node) {
         // Check if '$' is used in the expression or if find is used.
         const jqUsed = /(\$|find)/.test(j(node).toSource());
@@ -175,7 +165,23 @@ module.exports = (fileInfo, { jscodeshift: j }) => {
     }
 
     const ast = j(fileInfo.source);
-    fixScoping(ast)
+    // Ensure `once` added to scope.
+    ast.find(j.CallExpression, {
+        callee: {
+            type: 'FunctionExpression',
+            extra: {
+                parenthesized: true
+            }
+        }
+    })
+        .filter(p => {
+            return p.value.arguments.map(i => i.name).includes('jQuery');
+        })
+        .replaceWith(p => {
+            const args = [...p.value.arguments || [], j.identifier('once')];
+            const params = [...p.value.callee.params || [], j.identifier('once')];
+            return j.callExpression(j.functionExpression(null, params, p.value.callee.body), args)
+        })
     ast.find(j.CallExpression, isOnceExpression).forEach(replacejQueryOnce);
 
     return ast.toSource();
